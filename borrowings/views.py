@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
@@ -17,20 +18,19 @@ class BorrowingListCreateView(generics.ListCreateAPIView):
 
         user = self.request.user
         is_active = self.request.query_params.get(
-            "is_active", "true"
-        ) == "true"
+            "is_active", None)
         user_id = self.request.query_params.get("user_id", None)
 
-        if user.is_staff():
+        if user.is_staff:
             if user_id:
                 queryset = queryset.filter(user_id=user_id)
         else:
             queryset = queryset.filter(user=user)
 
-        if is_active:
-            return queryset.filter(
-                user_id=user_id, actual_return_date__isnull=True
-            )
+        if is_active == "true":
+            return queryset.filter(actual_return_date__isnull=True)
+        if is_active == "false":
+            return queryset.exclude(actual_return_date__isnull=True)
         return queryset
 
     def get_serializer_class(self):
@@ -41,6 +41,26 @@ class BorrowingListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         # Attach the current user to the borrowing
         serializer.save(user=self.request.user)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "is_active",
+                type=str,
+                description="Filter by active followings (ex. ?is_active=true)",
+                required=False,
+                enum=["true", "false"],
+            ),
+            OpenApiParameter(
+                "user_id",
+                type=int,
+                description="Filter by user id. Only for admin (ex. ?user_id=1)",
+                required=False,
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class BorrowingDetail(generics.RetrieveAPIView):
