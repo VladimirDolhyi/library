@@ -1,7 +1,7 @@
 from django.urls import path
 
 from borrowings.views import (
-    BorrowingListCreateView, BorrowingDetail,
+    BorrowingListCreateView, BorrowingDetail, ReturnBorrowingView
 )
 
 app_name = "borrowings"
@@ -16,5 +16,10 @@ urlpatterns = [
         "borrowings/<int:pk>/",
         BorrowingDetail.as_view(),
         name="borrowing-detail"
-    )
+    ),
+    path(
+        "borrowings/<int:pk>/return/",
+        ReturnBorrowingView.as_view(),
+        name="return-borrowing"
+    ),
 ]

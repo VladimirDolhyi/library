@@ -33,3 +33,9 @@ class CreateBorrowingSerializer(serializers.ModelSerializer):
         # Create the borrowing instance
         borrowing = Borrowing.objects.create(**validated_data)
         return borrowing
+
+
+class ReturnBorrowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Borrowing
+        fields = ["actual_return_date"]
