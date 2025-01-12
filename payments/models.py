@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 
 from borrowings.models import Borrowing
@@ -24,12 +23,6 @@ class Payment(models.Model):
     session_url = models.URLField()
     session_id = models.CharField(max_length=255)
     money_to_pay = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        related_name="payments",
-        null=True
-    )
 
     def __str__(self):
-        return f"{self.user}, {self.type_field} - {self.status} - {self.money_to_pay}"
+        return f"{self.borrowing.user}, {self.type_field} - {self.status} - {self.money_to_pay}"
