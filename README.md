@@ -106,11 +106,6 @@ $ python manage.py runserver
 
 ### 👉 Getting access
 
-* create user via /api/user/register
-* get access token via /api/user/token
-
-### 👉 Getting access
-
 * create user via /api/users
 * get access token via /api/users/token
 
