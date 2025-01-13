@@ -124,7 +124,7 @@ $ python manage.py runserver
 ![Database Schema](images/Database_schema.jpg)
 
 ### 👉 Endpoints Example
-![Endpoints Example](images/Endpoints_example.png)
+![Endpoints Example](images/Endpoints_Example.png)
 
 ### 👉 Borrowings Page Example
 ![Borrowings Page Example](images/Borrowings_Page.png)
