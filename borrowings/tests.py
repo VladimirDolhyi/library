@@ -1,5 +1,3 @@
-import datetime
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -48,13 +46,13 @@ class AuthenticatedBorrowingAPITests(TestCase):
         self.user = get_user_model().objects.create_user(
             email="test@test.test", password="testpassword"
         )
-        other_user = get_user_model().objects.create_user(
+        self.other_user = get_user_model().objects.create_user(
             email="other@test.test", password="otherpassword"
         )
-        borrowing1 = sample_borrowing(user=self.user)
-        borrowing2 = sample_borrowing(user=self.user)
-        borrowing3 = sample_borrowing(user=self.user)
-        borrowing4 = sample_borrowing(user=other_user)
+        self.borrowing1 = sample_borrowing(user=self.user)
+        self.borrowing2 = sample_borrowing(user=self.user)
+        self.borrowing3 = sample_borrowing(user=self.user)
+        self.borrowing4 = sample_borrowing(user=self.other_user)
         self.client.force_authenticate(self.user)
 
     def test_create_borrowing(self):
@@ -113,10 +111,10 @@ class AdminBorrowingTests(TestCase):
         self.other_user = get_user_model().objects.create_user(
             email="other@test.test", password="otherpassword"
         )
-        borrowing1 = sample_borrowing(user=self.user)
-        borrowing2 = sample_borrowing(user=self.user)
-        borrowing3 = sample_borrowing(user=self.user)
-        borrowing4 = sample_borrowing(
+        self.borrowing1 = sample_borrowing(user=self.user)
+        self.borrowing2 = sample_borrowing(user=self.user)
+        self.borrowing3 = sample_borrowing(user=self.user)
+        self.borrowing4 = sample_borrowing(
             user=self.other_user, actual_return_date="2025-01-12"
         )
         self.client.force_authenticate(self.admin)
